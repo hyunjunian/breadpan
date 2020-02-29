@@ -217,3 +217,5 @@ sketch
 .noseids
 
 # End of https://www.gitignore.io/api/node,react,python
+
+.idea
