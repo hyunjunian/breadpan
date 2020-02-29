@@ -1,9 +1,11 @@
 from breadpan.entity import Entity
 
+
 class ToDoEntity(Entity):
     """Example of data entity class for ToDo
     """
-    def __init__(self, todo_id:str, task:dict):
+
+    def __init__(self, todo_id: str, task: dict):
         """Contructor 
         
         Arguments:

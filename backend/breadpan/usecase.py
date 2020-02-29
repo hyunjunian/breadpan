@@ -1,16 +1,17 @@
 from abc import *
 from breadpan.entity import Entity
 
+
 class DataAccessGateway(metaclass=ABCMeta):
     """Interface of data access class. 
     """
-        
+
     @abstractmethod
     def create(self, entity: Entity):
         pass
 
     @abstractmethod
-    def read(self,  entity_id: str, **kwargs):
+    def read(self, entity_id: str, **kwargs):
         pass
 
     @abstractmethod
@@ -24,7 +25,6 @@ class DataAccessGateway(metaclass=ABCMeta):
     @abstractmethod
     def delete(self, entity_id: str, **kwargs):
         pass
-
 
 
 class UsecaseInputPort(object):
@@ -42,6 +42,7 @@ class UsecaseInteractor(UsecaseInputPort):
     """IUsecaseInteractor
 
     """
+
     @abstractmethod
     def run(self, data: DataAccessGateway):
         """operate
@@ -59,4 +60,3 @@ class UsecaseOutputPort(metaclass=ABCMeta):
     def __init__(self, **kwargs):
         for key, value in kwargs.items():
             self.output[key] = value
-    

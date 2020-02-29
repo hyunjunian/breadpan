@@ -1,11 +1,9 @@
-
-from breadpan.usecase import DataAccessGateway, UsecaseInteractor,UsecaseOutputPort
+from breadpan.usecase import DataAccessGateway, UsecaseInteractor, UsecaseOutputPort
 from todo.entity import ToDoEntity
 
 
-
 class ToDoCreateInteractor(UsecaseInteractor):
-    def run(self,  data: DataAccessGateway):        
+    def run(self, data: DataAccessGateway):
         # Get id from the controller's data. 
         todo_id = self.input["todo_id"]
         contents = self.input["contents"]
@@ -17,12 +15,13 @@ class ToDoCreateInteractor(UsecaseInteractor):
         # Link to output port
         return UsecaseOutputPort(todo=t)
 
+
 class ToDoUpdateInteractor(UsecaseInteractor):
-    def run(self, data: DataAccessGateway):        
+    def run(self, data: DataAccessGateway):
         # Get id from the controller's data. 
-        todo_id = self.input["todo_id"]
+        todo_id = self.input["todo_id"]  # InputPort 에서 만들어 둔 Interface 에 맞게 데이터 받은 뒤, 해당 데이터를 메소드 안의 변수로 받기
         contents = self.input["contents"]
-        t = ToDoEntity(todo_id, contents['task'])
+        t = ToDoEntity(todo_id, contents['task'])  # Todo엔티티를 이용하여 엔티티 생성
 
         # Store the data. 
         data.update(t)
@@ -52,7 +51,7 @@ class ToDoDeleteInteractor(UsecaseInteractor):
     def run(self, data: DataAccessGateway):
         # Get task ID
         todo_id = self.input["todo_id"]
-        
+
         # Delete data by entity id. 
         data.delete(todo_id)
 

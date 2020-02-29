@@ -1,12 +1,14 @@
 from breadpan.interface import Controller, Presenter
 from todo.entity import ToDoEntity
-from todo.usecase import DataAccessGateway, ToDoCreateInteractor, ToDoUpdateInteractor, ToDoReadInteractor, ToDoDeleteInteractor, ToDoReadAllInteractor
+from todo.usecase import DataAccessGateway, ToDoCreateInteractor, ToDoUpdateInteractor, ToDoReadInteractor, \
+    ToDoDeleteInteractor, ToDoReadAllInteractor
 
 
 class TodoDataInMemory(DataAccessGateway):
     """ TodoDataInMemory
     Store ToDoEntity as {key, value}:=>{todo_id, task}.
     """
+
     def __init__(self):
         self.TODOS = {}
 
@@ -18,7 +20,7 @@ class TodoDataInMemory(DataAccessGateway):
         return ToDoEntity(entity_id, self.TODOS[entity_id])
 
     def read_all(self):
-        return [ ToDoEntity(key, value) for key, value in self.TODOS.items() ]
+        return [ToDoEntity(key, value) for key, value in self.TODOS.items()]
 
     def update(self, entity: ToDoEntity, **kwargs):
         self.TODOS[entity.entity_key] = entity.task
@@ -34,20 +36,22 @@ class ToDoPresenter(Presenter):
     
     Convert ToDoEntity to {todo.id : {'task': todo.task}} for RESTful response as view. 
     """
+
     def show(self):
         todo_entry = self.output['todo']
-        return { todo_entry.entity_key : {'task':todo_entry.task}  }
+        return {todo_entry.entity_key: {'task': todo_entry.task}}
+
 
 class ToDosPresenter(Presenter):
     """ToDosPresenter
     
     Convert list of ToDoEntity to the list of {todo.id : {'task': todo.task}} for RESTful response as view. 
     """
+
     def show(self):
         todo_entry_list = self.output['todo']
-        new_list = [ { 'key':x.entity_key, 'task':x.task } for x in todo_entry_list ]
+        new_list = [{'key': x.entity_key, 'task': x.task} for x in todo_entry_list]
         return new_list
-         
 
 
 class ToDoController(Controller):
@@ -56,7 +60,7 @@ class ToDoController(Controller):
     """
 
     def __init__(self):
-        self.__data = TodoDataInMemory() # Use memory DB.
+        self.__data = TodoDataInMemory()  # Use memory DB.
 
     def create(self, todo_id, contents):
         i = ToDoCreateInteractor(todo_id=todo_id, contents=contents)
@@ -75,5 +79,5 @@ class ToDoController(Controller):
         return ToDoPresenter(i.run(self.__data)).show()
 
     def update(self, todo_id, contents):
-        i = ToDoUpdateInteractor(todo_id=todo_id, contents=contents)
+        i = ToDoUpdateInteractor(todo_id=todo_id, contents=contents)  # Usecase Interactor 를 사용. update interactor 로 사용
         return ToDoPresenter(i.run(self.__data)).show()
